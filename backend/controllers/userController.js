@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../utils/generateToken");
+const cloudinary = require("../config/cloudinary");
+const streamifier = require("streamifier");
 
 // ================= Register User =================
 const registerUser = async (req, res) => {
@@ -120,6 +122,59 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+// ================= Update Profile =================
+const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const { fullName, bio } = req.body;
+
+    if (fullName) user.fullName = fullName;
+    if (bio) user.bio = bio;
+
+    // Upload profile picture to Cloudinary
+    if (req.file) {
+      const uploadFromBuffer = () => {
+        return new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            {
+              folder: "SocialSphere/profilePics",
+            },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          );
+
+          streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
+        });
+      };
+
+      const result = await uploadFromBuffer();
+      user.profilePic = result.secure_url;
+    }
+
+    await user.save();
+
+    const updatedUser = await User.findById(user._id).select("-password");
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 // ================= Logout User =================
 const logoutUser = (req, res) => {
   res.cookie("jwt", "", {
@@ -136,5 +191,6 @@ module.exports = {
   registerUser,
   loginUser,
   getUserProfile,
+  updateProfile,
   logoutUser,
 };
