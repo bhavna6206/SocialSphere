@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
+const postRoutes = require("./routes/postRoutes");
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ const PORT = process.env.PORT || 5000;
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 SocialSphere Backend is Running!");
