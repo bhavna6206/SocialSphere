@@ -1,6 +1,36 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 function Login() {
+    const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    });
+
+    const handleChange = (e) => {
+    setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+    });
+    };
+
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+        const res = await api.post("/users/login", formData);
+
+        alert(res.data.message);
+
+        navigate("/home");
+    } catch (error) {
+        alert(error.response?.data?.message || "Login failed");
+    }
+    };
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
@@ -13,7 +43,7 @@ function Login() {
           Welcome Back 👋
         </p>
 
-        <form className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
 
           <div>
             <label className="block mb-2 font-medium">
@@ -21,9 +51,12 @@ function Login() {
             </label>
 
             <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -33,9 +66,12 @@ function Login() {
             </label>
 
             <input
-              type="password"
-              placeholder="Enter your password"
-              className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
