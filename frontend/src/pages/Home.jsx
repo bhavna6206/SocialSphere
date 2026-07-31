@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import Navbar from "../components/Navbar";
 
 function Home() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [commentText, setCommentText] = useState("");
@@ -51,22 +52,23 @@ const handleComment = async (postId) => {
   }
 };
 
-  const handleLogout = async () => {
-    try {
-      await api.post("/users/logout");
+  // const handleLogout = async () => {
+  //   try {
+  //     await api.post("/users/logout");
 
-      alert("Logged out successfully");
+  //     alert("Logged out successfully");
 
-      navigate("/");
-    } catch (error) {
-      alert("Logout failed");
-    }
-  };
+  //     navigate("/");
+  //   } catch (error) {
+  //     alert("Logout failed");
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-gray-100">
 
-      {/* Header */}
+      <Navbar />
+      {/* Header
 
       <div className="flex justify-between items-center p-6 bg-white shadow">
 
@@ -81,7 +83,7 @@ const handleComment = async (postId) => {
           Logout
         </button>
 
-      </div>
+      </div> */}
 
       {/* Welcome */}
 

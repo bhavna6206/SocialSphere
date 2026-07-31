@@ -24,6 +24,7 @@ function Login() {
 
     try {
         const res = await api.post("/users/login", formData);
+        console.log(res.data);
 
         await fetchUser();
         alert(res.data.message);
