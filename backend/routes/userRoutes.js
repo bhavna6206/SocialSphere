@@ -1,44 +1,40 @@
 const express = require("express");
 const router = express.Router();
 
+const protect = require("../middleware/authMiddleware");
+
 const {
   registerUser,
   loginUser,
+  logoutUser,
   getUserProfile,
   updateProfile,
-  logoutUser,
   followUser,
   unfollowUser,
   searchUsers,
   getUserById,
 } = require("../controllers/userController");
 
-const protect = require("../middleware/authMiddleware");
-const upload = require("../middleware/uploadMiddleware");
-
-// Public Routes
+// ================= Authentication =================
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+router.post("/logout", protect, logoutUser);
 
-// Protected Route
+// ================= Logged-in User =================
 router.get("/profile", protect, getUserProfile);
 
-router.put(
-  "/profile",
-  protect,
-  upload.single("profilePic"),
-  updateProfile
-);
+// ================= User Profile =================
+router.put("/update", protect, updateProfile);
 
+// ================= Follow / Unfollow =================
 router.put("/follow/:id", protect, followUser);
-
 router.put("/unfollow/:id", protect, unfollowUser);
 
+// ================= Search Users =================
 router.get("/search", protect, searchUsers);
 
+// ================= Get User By ID =================
+// Keep this LAST because ":id" can match other routes like "/profile"
 router.get("/:id", protect, getUserById);
-
-// Logout Route
-router.post("/logout", logoutUser);
 
 module.exports = router;

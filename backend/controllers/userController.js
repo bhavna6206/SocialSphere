@@ -322,9 +322,9 @@ const getUserById = async (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
   getUserProfile,
   updateProfile,
-  logoutUser,
   followUser,
   unfollowUser,
   searchUsers,

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
     const navigate = useNavigate();
+    const { fetchUser } = useAuth();
 
     const [formData, setFormData] = useState({
     email: "",
@@ -23,8 +25,8 @@ function Login() {
     try {
         const res = await api.post("/users/login", formData);
 
+        await fetchUser();
         alert(res.data.message);
-
         navigate("/home");
     } catch (error) {
         alert(error.response?.data?.message || "Login failed");
