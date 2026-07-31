@@ -35,6 +35,13 @@ function Navbar() {
           </Link>
 
           <Link
+            to="/create"
+            className="font-semibold hover:text-blue-600"
+          >
+            ➕ Create
+          </Link>
+
+          <Link
             to="/profile"
             className="font-semibold hover:text-blue-600"
           >
