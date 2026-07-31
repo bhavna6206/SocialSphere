@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 
 function Home() {
-  // const navigate = useNavigate();
   const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [commentText, setCommentText] = useState("");
@@ -52,38 +50,10 @@ const handleComment = async (postId) => {
   }
 };
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await api.post("/users/logout");
-
-  //     alert("Logged out successfully");
-
-  //     navigate("/");
-  //   } catch (error) {
-  //     alert("Logout failed");
-  //   }
-  // };
-
   return (
     <div className="min-h-screen bg-gray-100">
 
       <Navbar />
-      {/* Header
-
-      <div className="flex justify-between items-center p-6 bg-white shadow">
-
-        <h1 className="text-3xl font-bold text-blue-600">
-          🚀 SocialSphere
-        </h1>
-
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-        >
-          Logout
-        </button>
-
-      </div> */}
 
       {/* Welcome */}
 
