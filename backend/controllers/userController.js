@@ -89,7 +89,7 @@ const loginUser = async (req, res) => {
     res.cookie("jwt", token, {
       httpOnly: true,
       secure: false, // true after deployment (HTTPS)
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -179,6 +179,8 @@ const updateProfile = async (req, res) => {
 const logoutUser = (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
+    secure: true,
+    sameSite: "none",
     expires: new Date(0),
   });
 
