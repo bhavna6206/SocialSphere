@@ -1,3 +1,4 @@
+const upload = require("../middleware/uploadMiddleware");
 const express = require("express");
 const router = express.Router();
 
@@ -24,7 +25,12 @@ router.post("/logout", protect, logoutUser);
 router.get("/profile", protect, getUserProfile);
 
 // ================= User Profile =================
-router.put("/update", protect, updateProfile);
+router.put(
+  "/update",
+  protect,
+  upload.single("profilePic"),
+  updateProfile
+);
 
 // ================= Follow / Unfollow =================
 router.put("/follow/:id", protect, followUser);
