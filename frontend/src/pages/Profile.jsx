@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 
 function Profile() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -80,6 +82,12 @@ function Profile() {
             <p className="mt-3">
               {user?.bio || "No bio yet."}
             </p>
+            <button
+              onClick={() => navigate("/edit-profile")}
+              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg"
+            >
+              ✏️ Edit Profile
+            </button>
 
             <div className="flex gap-8 mt-5 font-semibold">
 
